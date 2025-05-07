@@ -49,6 +49,13 @@ $original = !empty($_POST["original"]) ? ExploitPatch::remove($_POST["original"]
 $twoPlayer = !empty($_POST["twoPlayer"]) ? ExploitPatch::remove($_POST["twoPlayer"]) : 0;
 $songID = !empty($_POST["songID"]) ? ExploitPatch::remove($_POST["songID"]) : 0;
 $objects = !empty($_POST["objects"]) ? ExploitPatch::remove($_POST["objects"]) : 0;
+
+$userNamer = ucfirst($userName);
+//if ($objects < 100) {
+//	bot_smsg("$userNamer пытался загрузить свой хуевый уровень, в котором $objects объектов и обосрался!");
+//    exit();
+//}
+
 $coins = !empty($_POST["coins"]) ? ExploitPatch::remove($_POST["coins"]) : 0;
 $requestedStars = !empty($_POST["requestedStars"]) ? ExploitPatch::remove($_POST["requestedStars"]) : 0;
 //TODO: verify if this is an optimal extraString for old levels
@@ -105,7 +112,47 @@ if($levelString != "" AND $levelName != ""){
 		file_put_contents("../../data/levels/$levelID",$levelString);
 		echo $levelID;
 	}
+	//авто сообщенрие
+	$lena = $gs->getLength($levelLength);
+    if ($levelVersion == 1) {
+        $TXT = <<<DIV
+		*$userNamer* _загрузил(а)_ уровень: *$levelName*!
+		*Length: $lena*
+		*Song: $songID*
+		*Objects: $objects*
+		*ID: $levelID*
+		DIV;
+    } else {
+        $TXT = <<<DIV
+		*$userNamer* _обновил(а)_ уровень: *$levelName*!
+		Версия: $levelVersion
+		*Length: $lena*
+		*Song: $songID*
+		*Objects: $objects*
+		*ID: $levelID*
+		DIV;
+    }
+	send_msg($TXT); //bot send
 }else{
 	echo -1;
+}
+
+function send_msg($text)
+{
+    $log_chat = '-1001739846266';
+    $BOT_TOKEN = '6140588959:AAHp6i443SelKFBuWzYsjgqryRb4H-ePHto';
+    $base_url = "https://api.telegram.org/bot{$BOT_TOKEN}/";
+    $params = [
+        'chat_id' => $log_chat,
+        'parse_mode' => 'Markdown',
+        'text' => $text,
+    ];
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $base_url . 'sendMessage');
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $result = json_decode(curl_exec($ch), true);
+    curl_close($ch);
 }
 ?>

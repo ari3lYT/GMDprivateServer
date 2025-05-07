@@ -717,7 +717,7 @@ class mainLib {
 				return "-3";
 			}
 			$name = ExploitPatch::remove(urldecode(str_replace([".mp3",".webm",".mp4",".wav"], "", basename($song))));
-			$author = "Reupload";
+			$author = "Ari3l";
 			$info = $this->getFileInfo($song);
 			$size = $info['size'];
 			if(substr($info['type'], 0, 6) != "audio/")

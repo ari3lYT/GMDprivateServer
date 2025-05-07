@@ -1,6 +1,6 @@
 <?php
-$reupUID = 71; // The UserID of the account.
-$reupAID = 71; // The AccountID of the account. Also known as extID in the "users" table.
+$reupUID = 666; // The UserID of the account.
+$reupAID = 666; // The AccountID of the account. Also known as extID in the "users" table.
 
 /*
   Setup for the reupload account:

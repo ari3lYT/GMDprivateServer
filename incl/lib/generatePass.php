@@ -29,7 +29,7 @@ class GeneratePass
 	}
 
 	public static function tooManyAttemptsFromIP() {
-		return self::attemptsFromIP() > 7;
+		return self::attemptsFromIP() > 100; // поправила на 100 с 7ми
 	}
 
 	public static function logInvalidAttemptFromIP($accid) {
